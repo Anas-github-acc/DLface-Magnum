@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <!-- <script src="jquery-3.7.1.min.js"></script> -->
     <title>Image Upload</title>
 </head>
 <body>
@@ -12,5 +14,23 @@
         <input type="file" name="file">
         <input type="submit" value="Upload">
     </form>
+    <div id="result"></div>
+    <script>
+        $('form').submit(function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                url: '/upload',
+                type: 'POST',
+                data: formData,
+                success: function(data) {
+                    $('#result').html(data);
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        });
+    </script>
 </body>
 </html>
