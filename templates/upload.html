@@ -1,22 +1,477 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+                /***************************
+            CUSTOM SCROLL BAR
+        ****************************/
+        *, html{
+            scroll-behavior: smooth;
+        }
+
+        *, *:after, *:before {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        :root{
+            --white:#FFF;
+            --black:#000;
+            --lite:rgba(255,255,255,0.6);
+            --gray:rgba(1,1,1,0.6);
+            --dark:#202124;
+            --primary:#fdd9a9;
+            --default_font:'Kanit', sans-serif;
+        }
+
+        ::-webkit-scrollbar {
+            height: 12px;
+            width: 4px;
+            background: var(--dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: gray;
+            -webkit-box-shadow: 0px 1px 2px var(--dark);
+        }
+
+        ::-webkit-scrollbar-corner {
+            background: var(--dark);
+        }
+
+        /***************************
+                    DEFAULT
+        ****************************/
+        body{
+            margin:0;
+            overflow-x:hidden !important;
+            font-family: var(--default_font);
+            color:inherit;
+        }
+
+        a{
+            text-decoration:none !important;
+            min-width: fit-content;
+            width: fit-content;
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
+        }
+
+        a, button{
+            transition:0.5s;
+        }
+
+        em{
+            font-style:normal;
+            color:var(--primary_dark);
+        }
+
+        figure{
+            padding:0;
+            margin:0;
+        }
+
+        figure img{
+            width:100%;
+            height:100%;
+        }
+
+        a, p, .btn{
+            font-size:15px;
+        }
+
+        a:hover, .active{
+            opacity:1 !important;
+        }
+
+        p{
+            line-height:1.9em;
+            color:var(--gray);
+        }
+
+        a, button, input, textarea, select{
+            outline:none !important;
+        }
+
+        fieldset{
+            border:0;
+        }
+
+        h1, h2, h3, h4, h5, h6{
+            margin:0;
+        }
+
+        .title, .sub_title{
+            font-family:var(--title_font);
+            font-weight:400;
+            margin:0;
+        }
+
+        .flex, .fixed_flex{
+            display:flex;
+        }
+
+        .flex_content{
+            width:100%;
+            position:relative;
+        }
+
+        .grid{
+            display:grid;
+        }
+
+        .padding_1x{
+            padding:1rem;
+        }
+
+        .padding_2x{
+            padding:2rem;
+        }
+
+        .padding_3x{
+            padding:3rem;
+        }
+
+        .padding_4x{
+            padding:4rem;
+        }
+
+        .big{
+            font-size:3em;
+        }
+
+        .medium{
+            font-size:2em;
+        }
+
+        .small{
+            font-size:1.1em;
+        }
+
+        .btn{
+            padding:0.8rem 2rem;
+            border-radius:40px;
+            position:relative;
+            border:0;
+            text-align:center;
+        }
+
+        .btn_1{
+            background: #4681f4;
+            color:var(--white);
+            cursor:pointer;
+        }
+
+        .btn_1:hover{
+            background-color: #1060ff;
+            color:var(--white);
+        }
+
+        @media (max-width:920px){
+            .flex{
+                flex-wrap:wrap;
+            }
+            
+            .padding_1x, .padding_2x, .padding_3x, .padding_4x{
+                padding:1rem;
+            }
+            
+            .big{
+                font-size:1.8em;
+            }
+            
+            .medium{
+                font-size:1.6em;
+            }
+            
+            .small{
+                font-size:1.1em;
+            }
+            
+            .btn{
+                padding:0.5rem 1rem;
+            }
+            
+            a, p, .btn{
+                font-size:12px;
+            }
+        }
+
+
+
+
+        /***************************
+                POPUP
+        ****************************/
+        .popup{
+            position:fixed;
+            bottom:0.2rem;
+            right:0.2rem;
+        }
+
+        .popup section{
+            position:relative;
+            max-width:350px;
+            background-color:var(--dark);
+            align-items:center;
+            border:1px solid rgba(255,255,255,0.2);
+            border-radius:10px;
+            overflow:hidden;
+            box-shadow:0px 6px 16px -6px var(--gray);
+            padding:0.3rem 1rem;
+        }
+
+        .popup section:not(:last-child){
+            margin-bottom:0.2rem;
+        }
+
+        .popup .icon-error{
+            color:#ffe008;
+        }
+
+        .popup .icon-warning{
+            color:red;
+        }
+
+        .popup article{
+            padding:0 1rem;
+            color:var(--white);
+        }
+
+        .popup .title{
+            position:relative;
+            top:13px;
+        }
+
+        .popup p{
+            font-size:12px;
+            font-weight:300;
+            opacity:0.6;
+            color:var(--white);
+        }
+
+        .popup .close{
+            position:absolute;
+            top:0.1rem;
+            right:0.3rem;
+            color:var(--white);
+            opacity:0.6;
+        }
+
+
+        /***************************
+            DRAG & DROP FORM
+        ****************************/
+        label input{
+            display:none;
+        }
+
+        .file label{
+            background-color:#f9f9f9;
+            border:1px dotted var(--gray);
+            border-radius:10px;
+            flex-wrap:wrap;
+            align-items:center;
+            justify-content:center;
+            text-align:center;
+        }
+
+        .file label iconify-icon, .file label .title, .file label p{
+            flex:0 0 100%;
+        }
+
+        .file label .fa{
+            font-size:3em;
+            color:#3399ff;
+        }
+
+        .file label em{
+            color:#3399ff;
+            cursor:pointer;
+        }
+
+        .file label p{
+            font-weight:300;
+            font-size:12px;
+        }
+
+        .file_preview{
+            padding:0;
+        }
+
+        .file_preview li{
+            align-items:center;
+            border:1px solid rgba(1,1,1,0.1);
+            border-radius:40px;
+            overflow:hidden;
+            margin-bottom:0.5rem;
+        }
+
+        .file_preview li .link{
+            line-height:0;
+            padding:0.1rem 1rem;
+            font-size:12px;
+            color:var(--gray);
+        }
+
+        .file_preview li .remove{
+            background-color:#3399ff;
+            color:var(--white);
+            padding:0.2rem 1rem;
+            margin:0 0 auto auto;
+            opacity:0.7;
+        }
+
+        .file_preview progress{
+            width:99%;
+            height:100%;
+            margin:auto;
+        }
+
+        /*Remove this*/
+        .alert{
+        position:fixed;
+        right:0;
+        bottom:1rem;
+        background-color:#1e1e1e;
+        color:#fff;
+        padding:0.2rem 0.5rem;
+        }
+
+        .alert a{
+        color:#fff;
+        }
+    </style>
+    <style>
+        #body {
+            height: 64px;
+            width: 100%;
+            padding-right: 16px;
+            margin-left: -8px;
+            margin-top: -8px;
+            transition: left 1.2s ease;
+            background: inherit;
+            /* filter */
+            
+            filter: blur(10px);
+            -webkit-filter: blur(10px);
+            -moz-filter: blur(15px);
+            -o-filter: blur(15px);
+            -ms-filter: blur(15px);
+            z-index: 999;
+            }
+            .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 64px;
+            background: rgb(14, 14, 14);
+            z-index: 1000;
+            }
+
+            .nav ul {
+            list-style: none;
+            white-space: nowrap;
+            padding-right: 32px;
+            }
+
+            .nav ul li {
+            display: inline-block;
+            }
+
+            .nav ul li a {
+            font-family: soleil, sans-serif;
+            font-weight: 100;
+            font-size: 19px;
+            color: white;
+            padding: 19px 16px;
+            transition: background 0.4s, text-shadow 0.4s;
+            cursor: pointer;
+            
+            }
+
+            .nav ul li a:hover {
+            background: rgba(255,255,255, 0.2);
+            text-shadow: 0 1px 5px rgba(0,0,0,0.15);
+            }
+
+            .nav ul #login {
+                position: absolute;
+                right: 0;
+                
+            }
+
+            .first {
+            margin-right: -0.17em;
+            border-right: none !important;
+            }
+
+            .last {
+            margin-left: -0.17em;
+            border-left: none !important;
+}
+    </style>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <!-- <script src="jquery-3.7.1.min.js"></script> -->
     <title>Image Upload</title>
+    <!--FONT AWESOME-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    
+    <!--ICONIFY-->
+    <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
+    
+    <!--GOOGLE FONTS-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    
+    <!--PLUGIN-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    
 </head>
 <body>
-    <h1>Upload an Image</h1>
-    <form action="/upload" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file">
-        <input type="submit" value="Upload">
+    <div class="nav" id="blur">
+        <ul>
+          <li><a class="first">Home</a></li>
+          <li><a class="first">Portfolio</a></li>
+          <li><a>Blog</a></li>
+          <li><a class="last">Pricing</a></li>
+          <li><a class="last">Contact Me</a></li>
+            <li><a href="/register" class="signup">Sign Up</a></li>
+            <li><a href="/login" class="login">Login</a></li>
+        </ul>
+    </div>
+      
+    <div id="body"></div>
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.53/build/spline-viewer.js"></script>
+    <spline-viewer url="https://prod.spline.design/l0QFukYGQBiICMc0/scene.splinecode"></spline-viewer>
+    <form class="file padding_2x" action="/upload" method="POST" enctype="multipart/form-data">
+        <label class="fixed_flex padding_3x">
+            <i class="fa fa-cloud-upload"></i>
+            <h2 class="title">Drag & Drop<br>or <em>Upload</em></h2>
+            <p>Accepted png, jpg, jpeg, pdf</p>
+            <input type="file" name="file" input-mode="file" accept=".png,.jpg,.jpeg,.pdf" />
+        </label>
+        <input type="submit" value="Upload" class="btn btn_1" />
+        
+        <ul class="file_preview"></ul>
+        Result : <div id="result"></div>
     </form>
-    <div id="result"></div>
     <script>
-        $('form').submit(function(e) {
+        var file, file_name, ext, formData = new FormData(), data, xhr, allowedExtensions = /(\.jpg|\.jpeg|\.png|\.pdf)$/i;
+        $("html").on("dragover", function(e) { Upload(e); });
+        $("html").on("drop", function(e) {
+            Upload(e);
+            // file = e.originalEvent.dataTransfer.files[0].name;
+            // formData.append('file', e.originalEvent.dataTransfer.files[0]);
+            // append_file(e);
+        });
+        $('form').on('submit', function(e) {
             e.preventDefault();
             var formData = new FormData(this);
             $.ajax({
@@ -31,6 +486,7 @@
                 processData: false
             });
         });
+
     </script>
 </body>
 </html>
